@@ -33,6 +33,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Workaround for npm bug #4828: lockfile generated on Windows
+      # misses Linux rollup native binary during npm ci
+      - name: Ensure Linux rollup binary
+        run: npm install @rollup/rollup-linux-x64-gnu@4.62.4 --no-save --no-audit --no-fund
+
       - name: Build
         run: npm run build 2>&1 | tee build.log
         shell: bash
